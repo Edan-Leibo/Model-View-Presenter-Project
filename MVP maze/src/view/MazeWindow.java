@@ -13,6 +13,8 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.List;
+import org.eclipse.swt.widgets.Menu;
+import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Spinner;
@@ -28,18 +30,53 @@ public class MazeWindow extends BasicWindow implements View {
 	private Button btnSolveMaze;
 	private Button btnHintMaze;
 	protected boolean hint=false;
-	
+	private Button btnGenerateMaze;
+	private Menu menuBar, fileMenu, helpMenu;
+	private MenuItem fileMenuHeader, helpMenuHeader;
+	private MenuItem fileExitItem, fileSaveItem, fileLoadItem ,helpGetHelpItem;
 	
 	@Override
 	protected void initWidgets() {
 		shell.setLayout(new GridLayout(2, false));				
-		
+		{
+
+		    menuBar = new Menu(shell, SWT.BAR);
+		    fileMenuHeader = new MenuItem(menuBar, SWT.CASCADE);
+		    fileMenuHeader.setText("&File");
+
+		    fileMenu = new Menu(shell, SWT.DROP_DOWN);
+		    fileMenuHeader.setMenu(fileMenu);
+
+		    fileSaveItem = new MenuItem(fileMenu, SWT.PUSH);
+		    fileSaveItem.setText("&Save");
+		    
+		    fileSaveItem = new MenuItem(fileMenu, SWT.PUSH);
+		    fileSaveItem.setText("&Load");
+
+		    fileExitItem = new MenuItem(fileMenu, SWT.PUSH);
+		    fileExitItem.setText("E&xit");
+
+		    helpMenuHeader = new MenuItem(menuBar, SWT.CASCADE);
+		    helpMenuHeader.setText("&Help");
+
+		    helpMenu = new Menu(shell, SWT.DROP_DOWN);
+		    helpMenuHeader.setMenu(helpMenu);
+
+		    helpGetHelpItem = new MenuItem(helpMenu, SWT.PUSH);
+		    helpGetHelpItem.setText("&Get Help");
+
+		    //fileExitItem.addSelectionListener(new fileExitItemListener());
+		    //fileSaveItem.addSelectionListener(new fileSaveItemListener());
+		    //helpGetHelpItem.addSelectionListener(new helpGetHelpItemListener());
+
+		    shell.setMenuBar(menuBar);
+		}
 		Composite btnGroup = new Composite(shell, SWT.BORDER);
 		RowLayout myLayout=new RowLayout(SWT.VERTICAL);
 		myLayout.fill=true;
 		btnGroup.setLayout(myLayout);
 	
-		Button btnGenerateMaze = new Button(btnGroup, SWT.PUSH);
+		btnGenerateMaze = new Button(btnGroup, SWT.PUSH);
 		btnGenerateMaze.setText("Generate maze");	
 		
 		btnGenerateMaze.addSelectionListener(new SelectionListener() {
@@ -64,7 +101,8 @@ public class MazeWindow extends BasicWindow implements View {
 			
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-
+				btnHintMaze.setEnabled(false);
+				//btnGenerateMaze.setEnabled(false);
 				setChanged();
 				notifyObservers("solve "+mazeDisplay.getMazeName()+ " fromProperties");						
 			}
@@ -104,7 +142,7 @@ public class MazeWindow extends BasicWindow implements View {
 		myShell.setText("Generate Maze");
 		myShell.setSize(300, 200);
 		
-		GridLayout layout = new GridLayout(2, false);
+		GridLayout layout = new GridLayout(3, false);
 		myShell.setLayout(layout);
 		
 		Label lblName = new Label(myShell, SWT.NONE);

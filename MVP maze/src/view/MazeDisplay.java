@@ -171,6 +171,8 @@ public class MazeDisplay extends Canvas {
 	 */
 	public void setMaze(Maze3d maze) {
 		this.maze = maze;
+		hintPath=null;
+		withHint=false;
 	}
 
 	/**
@@ -239,7 +241,5 @@ public class MazeDisplay extends Canvas {
 		withHint=true;
 		redraw();
 	}
-	
-
 	
 }
