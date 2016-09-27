@@ -115,7 +115,7 @@ public class CommandsManager {
 				return;
 			}
 			if (model.loadMaze(args[0], args[1])){
-				view.notifyMazeLoaded(args[0]);
+				view.notifyMazeLoaded(args[1]);
 			}
 		}		
 	}

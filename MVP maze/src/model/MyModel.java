@@ -249,7 +249,7 @@ public class MyModel extends Observable implements Model {
 		//check if there is a maze under that name
 		if (mazes.containsKey(name)){
 			setChanged();
-			notifyObservers("display_msg The name "+name+ " already exists in the system, please choose a different name");
+			notifyObservers("maze_ready "+ name);
 			return false;
 		}
 		InputStream in=null;

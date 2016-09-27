@@ -1,6 +1,8 @@
 package view;
 
+import java.io.File;
 import java.util.ArrayList;
+import java.util.regex.Pattern;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
@@ -11,6 +13,8 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.DirectoryDialog;
+import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.List;
 import org.eclipse.swt.widgets.Menu;
@@ -49,9 +53,10 @@ public class MazeWindow extends BasicWindow implements View {
 
 		    fileSaveItem = new MenuItem(fileMenu, SWT.PUSH);
 		    fileSaveItem.setText("&Save");
+		    fileSaveItem.setEnabled(false);
 		    
-		    fileSaveItem = new MenuItem(fileMenu, SWT.PUSH);
-		    fileSaveItem.setText("&Load");
+		    fileLoadItem = new MenuItem(fileMenu, SWT.PUSH);
+		    fileLoadItem.setText("&Load");
 
 		    fileExitItem = new MenuItem(fileMenu, SWT.PUSH);
 		    fileExitItem.setText("E&xit");
@@ -65,9 +70,10 @@ public class MazeWindow extends BasicWindow implements View {
 		    helpGetHelpItem = new MenuItem(helpMenu, SWT.PUSH);
 		    helpGetHelpItem.setText("&Get Help");
 
-		    //fileExitItem.addSelectionListener(new fileExitItemListener());
-		    //fileSaveItem.addSelectionListener(new fileSaveItemListener());
-		    //helpGetHelpItem.addSelectionListener(new helpGetHelpItemListener());
+		    fileExitItem.addSelectionListener(new fileExitItemListener());
+		    fileSaveItem.addSelectionListener(new fileSaveItemListener());
+		    fileLoadItem.addSelectionListener(new fileLoadItemListener());
+		    helpGetHelpItem.addSelectionListener(new helpGetHelpItemListener());
 
 		    shell.setMenuBar(menuBar);
 		}
@@ -142,7 +148,7 @@ public class MazeWindow extends BasicWindow implements View {
 		myShell.setText("Generate Maze");
 		myShell.setSize(300, 200);
 		
-		GridLayout layout = new GridLayout(3, false);
+		GridLayout layout = new GridLayout(4, true);
 		myShell.setLayout(layout);
 		
 		Label lblName = new Label(myShell, SWT.NONE);
@@ -190,6 +196,7 @@ public class MazeWindow extends BasicWindow implements View {
 				notifyObservers("generate_maze "+txtName.getText()+" "+floorSpinner.getSelection()+ " " + rowsSpinner.getSelection()+ " " + colsSpinner.getSelection()+" "+listAlgo.getSelection()[0]);			
 				myShell.close();
 				shell.setEnabled(true);
+				fileSaveItem.setEnabled(true);
 			}
 			
 			@Override
@@ -213,7 +220,7 @@ public class MazeWindow extends BasicWindow implements View {
 				msg.setMessage("Maze " + myName + " is ready");
 				msg.open();	
 				
-				mazeDisplay.setName(myName);
+				mazeDisplay.setMazeName(myName);
 				
 				setChanged();
 				notifyObservers("display " + myName);
@@ -275,14 +282,15 @@ public class MazeWindow extends BasicWindow implements View {
 
 	@Override
 	public void notifyMazeSaved(String name) {
-		// TODO Auto-generated method stub
-		
+	//	System.out.println("sadasd");
 	}
 
 	@Override
 	public void notifyMazeLoaded(String name) {
-		// TODO Auto-generated method stub
+		mazeDisplay.setMazeName(name);
 		
+		setChanged();	
+		notifyObservers("display "+name);
 	}
 
 	@Override
@@ -331,5 +339,72 @@ public class MazeWindow extends BasicWindow implements View {
 		}
 		return ans;
 	}
+
+	class fileExitItemListener implements SelectionListener {
+	    public void widgetSelected(SelectionEvent event) {
+	      shell.close();
+	      display.dispose();
+	    }
+
+	    public void widgetDefaultSelected(SelectionEvent event) {
+	      shell.close();
+	      display.dispose();
+	    }
+	  }
+
+	class fileSaveItemListener implements SelectionListener {
+	    public void widgetSelected(SelectionEvent event){
+	    	DirectoryDialog dialog = new DirectoryDialog(shell);
+	    	dialog.setText("Save maze");
+	    	dialog.setMessage("Select a directory to save your maze in.\n"
+	    			+ "File name: "+ mazeDisplay.getMazeName()+".maz");
+	    	String selected=dialog.open();
+	        if (selected==null) return;
+	    	selected=selected+File.separator+mazeDisplay.getMazeName()+".maz";
+
+	    	setChanged();
+	    	notifyObservers("save_maze "+mazeDisplay.getMazeName()+" "+selected);	
+	    }
+
+	    public void widgetDefaultSelected(SelectionEvent event) {
+	    }
+	  }
+	
+	class fileLoadItemListener implements SelectionListener {
+	    public void widgetSelected(SelectionEvent event) {
+	    	FileDialog fd= new FileDialog(shell, SWT.OPEN);
+	    	fd.setText("Load maze");
+	    	String[] filterExt= {"*.maz"};
+	    	fd.setFilterExtensions(filterExt);
+	    	String selected= fd.open();
+	    	if (selected==null) return;
+	    	String[] arr= selected.split(Pattern.quote(File.separator));
+	    	String selectedMazeName=arr[arr.length-1];
+	    	
+	    	setChanged();
+	    	notifyObservers("load_maze "+selected+ " "+ selectedMazeName.substring(0, selectedMazeName.length()-4));	
+
+	    }
+
+	    public void widgetDefaultSelected(SelectionEvent event) {
+	    }
+	  }
+
+	class helpGetHelpItemListener implements SelectionListener {
+	    public void widgetSelected(SelectionEvent event) {
+	    	MessageBox dialog = new MessageBox(shell, SWT.ICON_INFORMATION | SWT.OK);
+	    	dialog.setText("Help - Lion King 1.0");
+	    	dialog.setMessage("This Java project was created by Leibovitz Edan"
+	    			+ "\nas part of the mandatory requirements of a Java course."
+	    			+ "\n\nThe Computer science department of Colman College of Management studies."
+	    			+ "\nInstructed by: Mr Nisim Barami. ");
+	    	// open dialog and await user selection
+	    	
+	    	dialog.open();
+	    }
+
+	    public void widgetDefaultSelected(SelectionEvent event) {
+	    }
+	  }
 
 }

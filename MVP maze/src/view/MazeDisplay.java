@@ -185,7 +185,7 @@ public class MazeDisplay extends Canvas {
 	/**
 	 * @param name the name to set
 	 */
-	public void setName(String name) {
+	public void setMazeName(String name) {
 		this.mazeName = name;
 	}
 
