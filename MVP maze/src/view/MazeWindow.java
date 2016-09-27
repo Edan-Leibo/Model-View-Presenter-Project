@@ -29,6 +29,7 @@ public class MazeWindow extends BasicWindow implements View {
 	private Button btnHintMaze;
 	protected boolean hint=false;
 	
+	
 	@Override
 	protected void initWidgets() {
 		shell.setLayout(new GridLayout(2, false));				
@@ -266,6 +267,7 @@ public class MazeWindow extends BasicWindow implements View {
 		final ArrayList<Position> m=getPath(sol.toString());
 		//check if the user only wanted a hint
 		if (hint){
+			btnHintMaze.setEnabled(false);
 			mazeDisplay.showHint(m);
 			mazeDisplay.redraw();
 			hint=false;

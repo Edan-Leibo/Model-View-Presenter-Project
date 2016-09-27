@@ -1,6 +1,7 @@
 package view;
 
 import java.util.ArrayList;
+import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -11,7 +12,6 @@ import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.widgets.Canvas;
-import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 
 import algorithms.mazeGenerators.Maze3d;
@@ -26,12 +26,13 @@ public class MazeDisplay extends Canvas {
 	private Maze3d maze;							//The maze we currently working on 
 	private String mazeName;
 	private boolean withHint;
-	private ArrayList<Position> path;
+	private ArrayList<Position> hintPath;
+	private Random random=new Random();
 	
 	
 	public MazeDisplay(Shell parent, int style) {
 		super(parent, style);
-		path=null;
+		hintPath=null;
 		mazeData=null;
 		withHint=false;
 		//Adding the event handler which will paint the maze every time needed
@@ -60,11 +61,11 @@ public class MazeDisplay extends Canvas {
 					}
 				//If user asked to draw the maze with hint on it
 				if (withHint){
-					for (Position p: path){
+						e.gc.setForeground(new Color(null,150,120,111));
+						e.gc.setBackground(new Color(null,230,214,111));
+					for (Position p: hintPath){
 						if (p.z==gameCharacter.getFloor()){
-							e.gc.setForeground(new Color(null,150,120,111));
-							e.gc.setBackground(new Color(null,230,214,111));
-							e.gc.fillOval(p.x*w,p.y*h, w, h);
+								e.gc.fillOval(p.x*w,p.y*h, w, h);
 						}
 					}
 				}
@@ -228,7 +229,13 @@ public class MazeDisplay extends Canvas {
 	}
 
 	public void showHint(ArrayList<Position> path) {
-		this.path=path;
+		hintPath=new ArrayList<Position>();
+		for (Position p:path){ 
+			if (random.nextInt(10)<2){
+				hintPath.add(p);
+			}
+		}
+
 		withHint=true;
 		redraw();
 	}
