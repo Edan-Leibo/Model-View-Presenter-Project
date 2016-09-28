@@ -35,7 +35,7 @@ public class CLI extends Observable{
 	 * @return Nothing
 	 */
 	private void printMenu() {
-		out.print("Choose command: ");
+		out.print("\nChoose command: \n");
 		out.flush();
 	}
 

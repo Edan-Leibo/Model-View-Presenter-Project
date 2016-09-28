@@ -7,6 +7,8 @@ import java.util.regex.Pattern;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.KeyListener;
+import org.eclipse.swt.events.MouseEvent;
+import org.eclipse.swt.events.MouseWheelListener;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Color;
@@ -16,10 +18,11 @@ import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.DirectoryDialog;
-import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.List;
+import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.MessageBox;
@@ -40,12 +43,28 @@ public class MazeWindow extends BasicWindow implements View {
 	private Button btnHintMaze;
 	protected boolean hint=false;
 	private Button btnGenerateMaze;
-	private Menu menuBar, fileMenu, helpMenu;
-	private MenuItem fileMenuHeader, helpMenuHeader;
-	private MenuItem fileExitItem, fileSaveItem, fileLoadItem ,helpGetHelpItem,filePropertiesItem;
+	private Menu menuBar, fileMenu, aboutMenu;
+	private MenuItem fileMenuHeader, aboutMenuHeader;
+	private MenuItem fileExitItem, fileSaveItem, fileLoadItem ,aboutGetHelpItem,filePropertiesItem;
 	private Properties p;
+	private MouseWheelListener mouseZoomlListener;
+
 	@Override
 	protected void initWidgets() {
+		shell.addListener(SWT.Close, new Listener()
+	    {
+	        public void handleEvent(Event event)
+	        {
+	            MessageBox messageBox = new MessageBox(shell, SWT.ICON_INFORMATION);
+	            messageBox.setText("Exit");
+	            messageBox.setMessage("~ Thanks for playing ~");
+	            messageBox.open();
+	            setChanged();
+	            notifyObservers("exit");
+	            display.dispose();	            	
+	        }
+	    });
+		shell.setBackground(new Color(null, 100,0,0));
 		p=PropertiesLoader.getInstance().getProperties();
 		shell.setLayout(new GridLayout(2, false));				
 		    menuBar = new Menu(shell, SWT.BAR);
@@ -68,20 +87,20 @@ public class MazeWindow extends BasicWindow implements View {
 		    fileExitItem = new MenuItem(fileMenu, SWT.PUSH);
 		    fileExitItem.setText("E&xit");
 
-		    helpMenuHeader = new MenuItem(menuBar, SWT.CASCADE);
-		    helpMenuHeader.setText("&Help");
+		    aboutMenuHeader = new MenuItem(menuBar, SWT.CASCADE);
+		    aboutMenuHeader.setText("&About");
 
-		    helpMenu = new Menu(shell, SWT.DROP_DOWN);
-		    helpMenuHeader.setMenu(helpMenu);
+		    aboutMenu = new Menu(shell, SWT.DROP_DOWN);
+		    aboutMenuHeader.setMenu(aboutMenu);
 
-		    helpGetHelpItem = new MenuItem(helpMenu, SWT.PUSH);
-		    helpGetHelpItem.setText("&Get Help");
+		    aboutGetHelpItem = new MenuItem(aboutMenu, SWT.PUSH);
+		    aboutGetHelpItem.setText("&About Lion King Maze");
 
 		    fileExitItem.addSelectionListener(new fileExitItemListener());
 		    filePropertiesItem.addSelectionListener(new filePropertiesItemListener());
 		    fileSaveItem.addSelectionListener(new fileSaveItemListener());
 		    fileLoadItem.addSelectionListener(new fileLoadItemListener());
-		    helpGetHelpItem.addSelectionListener(new helpGetHelpItemListener());
+		    aboutGetHelpItem.addSelectionListener(new helpGetHelpItemListener());
 
 		    shell.setMenuBar(menuBar);
 		    
@@ -181,6 +200,17 @@ public class MazeWindow extends BasicWindow implements View {
 			}
 			
 		});
+		mouseZoomlListener = new MouseWheelListener() {
+
+			@Override
+			public void mouseScrolled(MouseEvent e) {
+				if ((e.stateMask & SWT.CTRL) != 0)
+					mazeDisplay.setSize(mazeDisplay.getSize().x + e.count,
+							mazeDisplay.getSize().y + e.count);
+
+			}
+		};
+		shell.addMouseWheelListener(mouseZoomlListener);
 	}
 
 	protected void showGenerateMazeOptions() {
@@ -366,8 +396,6 @@ public class MazeWindow extends BasicWindow implements View {
 			btnHintMaze.setEnabled(false);
 		}
 	}
-
-	////////////////////////////////////////////////////
 	
 	private ArrayList<Position> getPath(String path) {
 		ArrayList<Position> ans= new ArrayList<Position>();
@@ -423,7 +451,6 @@ public class MazeWindow extends BasicWindow implements View {
 	class fileExitItemListener implements SelectionListener {
 	    public void widgetSelected(SelectionEvent event) {
 	      shell.close();
-	      display.dispose();
 	    }
 
 	    public void widgetDefaultSelected(SelectionEvent event) {

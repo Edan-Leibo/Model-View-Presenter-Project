@@ -133,7 +133,7 @@ public class CommandsManager {
 			}
 			try{
 				int[][] maze2d= model.getCrossSection(Integer.parseInt(args[0]),args[1], args[2]);
-				view.displayCrossSectionMaze(Integer.parseInt(args[0]),args[1], args[2],maze2d);
+				view.displayCrossSectionMaze(Integer.parseInt(args[0]),args[1], args[2], maze2d);
 			}
 			catch(NumberFormatException e){
 				view.displayBadArguments();
