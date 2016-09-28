@@ -109,7 +109,6 @@ public class MazeWindow extends BasicWindow implements View {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				btnHintMaze.setEnabled(false);
-				//btnGenerateMaze.setEnabled(false);
 				setChanged();
 				notifyObservers("solve "+mazeDisplay.getGameboardName()+ " fromProperties");						
 			}
@@ -280,10 +279,7 @@ public class MazeWindow extends BasicWindow implements View {
 		MessageBox dialog = new MessageBox(shell, SWT.ICON_ERROR | SWT.OK);
     	dialog.setText("Error Massage - Lion King 1.0");
     	dialog.setMessage(error);
-    	// open dialog and await user selection
-    	
     	dialog.open();
-		
 	}
 
 	@Override
@@ -316,7 +312,7 @@ public class MazeWindow extends BasicWindow implements View {
 
 	@Override
 	public void displaySolution(String name, Solution<Position> sol) {
-		final ArrayList<Position> m=getPath(sol.toString());	
+		final ArrayList<Position> m=getPath(sol.toString());//expandSol(getPath(sol.toString()));	
 		//check if the user only wanted a hint
 		if (hint){
 			btnHintMaze.setEnabled(false);
@@ -329,7 +325,7 @@ public class MazeWindow extends BasicWindow implements View {
 			btnHintMaze.setEnabled(false);
 		}
 	}
-	
+
 	private ArrayList<Position> getPath(String path) {
 		ArrayList<Position> ans= new ArrayList<Position>();
 		String[] strSol=(path.toString()).split(" ");
@@ -341,6 +337,42 @@ public class MazeWindow extends BasicWindow implements View {
 			int x= Integer.parseInt(cell[2]);
 			Position p=new Position(z,y,x);
 			ans.add(p);
+		}
+		return ans;
+	}
+
+	private ArrayList<Position> expandSol(ArrayList<Position> path) {
+		ArrayList<Position> ans=new ArrayList<Position>();
+		for(int i=0; i<path.size()-1;i++){
+			Position toAdd = getMissingPosition(path.get(i),path.get(i+1));
+			ans.add(path.get(i));
+			ans.add(toAdd);
+		}
+		ans.add(path.get(path.size()-1));
+		return ans;
+	}
+	
+	private Position getMissingPosition(Position position, Position position2) {
+		Position ans=new Position(0, 0, 0);
+		if (position.z==position2.z){
+			ans.z=position.z;
+		}
+		else{
+			ans.z= Math.min(position.z,position2.z)+1;
+		}
+		
+		if (position.y==position2.y){
+			ans.y=position.y;
+		}
+		else{
+			ans.y= Math.min(position.y,position2.y)+1;
+		}
+		
+		if (position.x==position2.x){
+			ans.x=position.x;
+		}
+		else{
+			ans.x= Math.min(position.x,position2.x)+1;
 		}
 		return ans;
 	}

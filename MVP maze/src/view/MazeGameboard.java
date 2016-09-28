@@ -31,7 +31,13 @@ public class MazeGameboard extends Gameboard {
 	private boolean withHint;
 	private ArrayList<Position> hintPath;
 	private Random random=new Random();
-	
+	private Image grassImage = new Image(getDisplay(),"resources"+File.separator+"grass.jpg");
+	private Image openingImage = new Image(getDisplay(),"resources"+File.separator+"opening.jpg");
+	private	Image upImage = new Image(getDisplay(),"resources"+File.separator+"up.png");
+	private Image downImage = new Image(getDisplay(),"resources"+File.separator+"down.png");
+	private Image wallImage = new Image(getDisplay(),"resources"+File.separator+"wall.png");
+	private Image hintImage = new Image(getDisplay(),"resources"+File.separator+"hint.png");
+
 	
 	public MazeGameboard(Shell parent, int style) {
 		super(parent, style);
@@ -48,8 +54,7 @@ public class MazeGameboard extends Gameboard {
 				int height=getSize().y;
 				
 				if (mazeData == null){
-					Image myImage = new Image(getDisplay(),"resources"+File.separator+"opening.jpg");
-					e.gc.drawImage(myImage, 0, 0, 612, 612, 0, 0, width,height);  
+					e.gc.drawImage(openingImage, 0, 0, 612, 612, 0, 0, width,height);  
 					return;
 				}
 				
@@ -61,20 +66,16 @@ public class MazeGameboard extends Gameboard {
 						int x=j*w;
 						int y=i*h;
 						//Draw grass in any cell
-						Image myImage = new Image(getDisplay(),"resources"+File.separator+"grass.jpg");
-						e.gc.drawImage(myImage, 0, 0, 256, 256, x, y, w, h); 
+						e.gc.drawImage(grassImage, 0, 0, 256, 256, x, y, w, h); 
 						//Drawing arrows on maze
 						if (mazeData[i][j]!=1 && maze.getMaze3d()[gameCharacter.getFloor()+1][i][j]==0){
-							myImage = new Image(getDisplay(),"resources"+File.separator+"up.png");
-							e.gc.drawImage(myImage, 0, 0, 256, 256, x, y, w/2, h);
+							e.gc.drawImage(upImage, 0, 0, 256, 256, x, y, w/2, h);
 						}
 						if (mazeData[i][j]!=1 && maze.getMaze3d()[gameCharacter.getFloor()-1][i][j]==0){
-							myImage = new Image(getDisplay(),"resources"+File.separator+"down.png");
-							e.gc.drawImage(myImage, 0, 0, 256, 256, x+w/2, y, w/2, h);
+							e.gc.drawImage(downImage, 0, 0, 256, 256, x+w/2, y, w/2, h);
 						}
 						if(mazeData[i][j]!=0){
-							myImage = new Image(getDisplay(),"resources"+File.separator+"wall.png");
-							e.gc.drawImage(myImage, 0, 0, 256, 256, x, y, w, h); 
+							e.gc.drawImage(wallImage, 0, 0, 256, 256, x, y, w, h); 
 						}
 						
 					}
@@ -82,8 +83,7 @@ public class MazeGameboard extends Gameboard {
 				if (withHint){
 					for (Position p: hintPath){
 						if (p.z==gameCharacter.getFloor()){
-								Image myImage = new Image(getDisplay(),"resources"+File.separator+"hint.png");
-								e.gc.drawImage(myImage, 0, 0, 256, 256, p.x*w+w/4, p.y*h+h/4, w/4, h/4); 
+								e.gc.drawImage(hintImage, 0, 0, 256, 256, p.x*w+w/4, p.y*h+h/4, w/4, h/4); 
 						}
 					}
 				}
@@ -268,7 +268,6 @@ public class MazeGameboard extends Gameboard {
 					
 					@Override
 					public void run() {	
-					    getShell().setEnabled(false);
 						gameCharacter.setFloor(path.get(i).z);
 						gameCharacter.setRow(path.get(i).y);
 						gameCharacter.setCol(path.get(i).x);
@@ -276,7 +275,6 @@ public class MazeGameboard extends Gameboard {
 						mazeDisplay.redraw();
 						i=i+1;
 						if (i==path.size()) {
-							getShell().setEnabled(true);
 							cancel();
 							timer.cancel();
 						}
