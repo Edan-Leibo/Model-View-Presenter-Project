@@ -3,8 +3,11 @@
  */
 package view;
 
+import java.io.File;
+
 import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.graphics.Image;
 
 /**
  * @author Edan
@@ -22,10 +25,13 @@ public class GameCharacter {
 	}
 	
 	public void paint(PaintEvent e, int w, int h){
-		e.gc.setForeground(new Color(null, 100,100,100));
-		e.gc.drawOval(w*col, h*row, w, h);
+		//e.gc.setForeground(new Color(null, 100,100,100));
+		//e.gc.drawOval(, h*row, w, h);
+		Image image = new Image(null,"resources"+File.separator+"pumba.gif");
+		e.gc.drawImage(image,0,0,150,121,w*col,h*row, w, h);
 	}
 
+	
 	/**
 	 * @return the floor
 	 */
