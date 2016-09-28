@@ -120,54 +120,7 @@ public class MazeGameboard extends Gameboard {
 				
 			}
 		});
-		this.addKeyListener(new KeyListener() {
-			
-			@Override
-			public void keyPressed(KeyEvent e) {
-				switch (e.keyCode) {
-				case SWT.ARROW_UP:
-						if (mazeData[gameCharacter.getRow()-1][gameCharacter.getCol()]==0){
-							gameCharacter.setRow(gameCharacter.getRow()-1);
-						}
-					break;
-				case SWT.ARROW_LEFT:
-					if (mazeData[gameCharacter.getRow()][gameCharacter.getCol()-1]==0){
-						gameCharacter.setCol(gameCharacter.getCol()-1);
-					}						
-					break;
-				case SWT.ARROW_RIGHT:
-					if (mazeData[gameCharacter.getRow()][gameCharacter.getCol()+1]==0){
-						gameCharacter.setCol(gameCharacter.getCol()+1);
-					}
 
-					break;
-				case SWT.ARROW_DOWN:
-					if (mazeData[gameCharacter.getRow()+1][gameCharacter.getCol()]==0){
-						gameCharacter.setRow(gameCharacter.getRow()+1);
-					}
-					break;
-				case SWT.PAGE_UP:
-					if (maze.getMaze3d()[gameCharacter.getFloor()+1][gameCharacter.getRow()][gameCharacter.getCol()]==0){
-						gameCharacter.setFloor(gameCharacter.getFloor()+1);
-						mazeData=maze.getCrossSectionByZ(gameCharacter.getFloor());
-					}
-					break;
-				case SWT.PAGE_DOWN:
-					if (maze.getMaze3d()[gameCharacter.getFloor()-1][gameCharacter.getRow()][gameCharacter.getCol()]==0){
-						gameCharacter.setFloor(gameCharacter.getFloor()-1);
-						mazeData=maze.getCrossSectionByZ(gameCharacter.getFloor());
-					}
-					break;
-				default:
-					break;
-				}
-				redraw();
-			}
-			@Override
-			public void keyReleased(KeyEvent e) {				
-			}
-			
-		});
 	}
 	
 	public void setGameBoard(int[][] gameBoard) {
@@ -277,11 +230,58 @@ public class MazeGameboard extends Gameboard {
 						if (i==path.size()) {
 							cancel();
 							timer.cancel();
+							getShell().setEnabled(true);
 						}
 						
 					}
 				});
 			}
 	}
+
+	@Override
+	public void moveUp() {
+		if (mazeData[gameCharacter.getRow()-1][gameCharacter.getCol()]==0){
+			gameCharacter.setRow(gameCharacter.getRow()-1);
+		}
+		redraw();
+	}
+	@Override
+	public void moveLeft() {
+		if (mazeData[gameCharacter.getRow()][gameCharacter.getCol()-1]==0){
+			gameCharacter.setCol(gameCharacter.getCol()-1);
+		}
+		redraw();
+	}
+	@Override
+	public void moveRight() {
+		if (mazeData[gameCharacter.getRow()][gameCharacter.getCol()+1]==0){
+			gameCharacter.setCol(gameCharacter.getCol()+1);
+		}
+		redraw();
+	}
+	@Override
+	public void moveDown() {
+		if (mazeData[gameCharacter.getRow()+1][gameCharacter.getCol()]==0){
+			gameCharacter.setRow(gameCharacter.getRow()+1);
+		}
+		redraw();
+	}
+	@Override
+	public void movePageUp() {
+		if (maze.getMaze3d()[gameCharacter.getFloor()+1][gameCharacter.getRow()][gameCharacter.getCol()]==0){
+			gameCharacter.setFloor(gameCharacter.getFloor()+1);
+			mazeData=maze.getCrossSectionByZ(gameCharacter.getFloor());
+		}
+		redraw();
+	}
+	@Override
+	public void movePageDown() {
+		if (maze.getMaze3d()[gameCharacter.getFloor()-1][gameCharacter.getRow()][gameCharacter.getCol()]==0){
+			gameCharacter.setFloor(gameCharacter.getFloor()-1);
+			mazeData=maze.getCrossSectionByZ(gameCharacter.getFloor());
+		}
+		redraw();
+	}
+	
 	
 }

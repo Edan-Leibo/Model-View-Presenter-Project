@@ -14,12 +14,16 @@ public class PropertiesLoader {
 	
 	private PropertiesLoader() 
 	{
+		XMLDecoder decoder=null;
 		try {
-			XMLDecoder decoder = new XMLDecoder(new FileInputStream("utilities/properties.xml"));
+			decoder = new XMLDecoder(new FileInputStream("utilities/properties.xml"));
 			properties = (Properties)decoder.readObject();
 			decoder.close();
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
+		}
+		finally{
+			decoder.close();
 		}
 	}
 	

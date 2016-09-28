@@ -68,5 +68,17 @@ public abstract class Gameboard extends Canvas {
 	 * @param path the path of the solution, will create a hint using that solution
 	 */
 	public abstract void showHint(ArrayList<Position> path);
+
+	public abstract void moveUp();
+
+	public abstract void movePageUp();
+
+	public abstract void movePageDown();
+
+	public abstract void moveDown();
+
+	public abstract void moveLeft();
+
+	public abstract void moveRight();
 	
 }

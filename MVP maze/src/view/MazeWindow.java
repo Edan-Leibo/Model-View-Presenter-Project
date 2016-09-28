@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.regex.Pattern;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.KeyEvent;
+import org.eclipse.swt.events.KeyListener;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Color;
@@ -43,8 +45,6 @@ public class MazeWindow extends BasicWindow implements View {
 	@Override
 	protected void initWidgets() {
 		shell.setLayout(new GridLayout(2, false));				
-		{
-
 		    menuBar = new Menu(shell, SWT.BAR);
 		    fileMenuHeader = new MenuItem(menuBar, SWT.CASCADE);
 		    fileMenuHeader.setText("&File");
@@ -77,7 +77,7 @@ public class MazeWindow extends BasicWindow implements View {
 		    helpGetHelpItem.addSelectionListener(new helpGetHelpItemListener());
 
 		    shell.setMenuBar(menuBar);
-		}
+		    
 		Composite btnGroup = new Composite(shell, SWT.BORDER);
 		RowLayout myLayout=new RowLayout(SWT.VERTICAL);
 		myLayout.fill=true;
@@ -141,6 +141,39 @@ public class MazeWindow extends BasicWindow implements View {
 		mazeDisplay= new MazeGameboard(shell, SWT.BORDER | SWT.DOUBLE_BUFFERED);//?
 		mazeDisplay.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 		
+		//Adding keyListeners to gameBoard
+		mazeDisplay.addKeyListener(new KeyListener() {
+			
+			@Override
+			public void keyPressed(KeyEvent e) {
+				switch (e.keyCode) {
+				case SWT.ARROW_UP:
+					mazeDisplay.moveUp();
+					break;
+				case SWT.ARROW_LEFT:
+					mazeDisplay.moveLeft();
+					break;
+				case SWT.ARROW_RIGHT:
+					mazeDisplay.moveRight();
+					break;
+				case SWT.ARROW_DOWN:
+					mazeDisplay.moveDown();
+					break;
+				case SWT.PAGE_UP:
+					mazeDisplay.movePageUp();
+					break;
+				case SWT.PAGE_DOWN:
+					mazeDisplay.movePageDown();
+					break;
+				default:
+					break;
+				}
+			}
+			@Override
+			public void keyReleased(KeyEvent e) {				
+			}
+			
+		});
 	}
 
 	protected void showGenerateMazeOptions() {
@@ -312,7 +345,7 @@ public class MazeWindow extends BasicWindow implements View {
 
 	@Override
 	public void displaySolution(String name, Solution<Position> sol) {
-		final ArrayList<Position> m=getPath(sol.toString());//expandSol(getPath(sol.toString()));	
+		final ArrayList<Position> m=expandSol(getPath(sol.toString()));	//getPath(sol.toString());
 		//check if the user only wanted a hint
 		if (hint){
 			btnHintMaze.setEnabled(false);
@@ -321,11 +354,14 @@ public class MazeWindow extends BasicWindow implements View {
 		}
 		//else the user wanted a solution
 		else{
+			shell.setEnabled(false);
 			mazeDisplay.showSolution(m);
 			btnHintMaze.setEnabled(false);
 		}
 	}
 
+	////////////////////////////////////////////////////
+	
 	private ArrayList<Position> getPath(String path) {
 		ArrayList<Position> ans= new ArrayList<Position>();
 		String[] strSol=(path.toString()).split(" ");
