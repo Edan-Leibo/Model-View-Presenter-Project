@@ -48,7 +48,8 @@ public class MazeWindow extends BasicWindow implements View {
 	private MenuItem fileExitItem, fileSaveItem, fileLoadItem ,aboutGetHelpItem,filePropertiesItem;
 	private Properties p;
 	private MouseWheelListener mouseZoomlListener;
-
+	protected KeyListener movementKeyListener=new MovementKeyListener();
+	
 	@Override
 	protected void initWidgets() {
 		shell.addListener(SWT.Close, new Listener()
@@ -134,7 +135,9 @@ public class MazeWindow extends BasicWindow implements View {
 			
 			@Override
 			public void widgetSelected(SelectionEvent e) {
+				mazeDisplay.removeKeyListener(movementKeyListener);
 				btnHintMaze.setEnabled(false);
+				shell.setEnabled(false);
 				setChanged();
 				notifyObservers("solve "+mazeDisplay.getGameboardName()+ " fromProperties");						
 			}
@@ -167,39 +170,6 @@ public class MazeWindow extends BasicWindow implements View {
 		mazeDisplay= new MazeGameboard(shell, SWT.BORDER | SWT.DOUBLE_BUFFERED);//?
 		mazeDisplay.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 		
-		//Adding keyListeners to gameBoard
-		mazeDisplay.addKeyListener(new KeyListener() {
-			
-			@Override
-			public void keyPressed(KeyEvent e) {
-				switch (e.keyCode) {
-				case SWT.ARROW_UP:
-					mazeDisplay.moveUp();
-					break;
-				case SWT.ARROW_LEFT:
-					mazeDisplay.moveLeft();
-					break;
-				case SWT.ARROW_RIGHT:
-					mazeDisplay.moveRight();
-					break;
-				case SWT.ARROW_DOWN:
-					mazeDisplay.moveDown();
-					break;
-				case SWT.PAGE_UP:
-					mazeDisplay.movePageUp();
-					break;
-				case SWT.PAGE_DOWN:
-					mazeDisplay.movePageDown();
-					break;
-				default:
-					break;
-				}
-			}
-			@Override
-			public void keyReleased(KeyEvent e) {				
-			}
-			
-		});
 		mouseZoomlListener = new MouseWheelListener() {
 
 			@Override
@@ -216,6 +186,11 @@ public class MazeWindow extends BasicWindow implements View {
 	protected void showGenerateMazeOptions() {
 		final Shell myShell = new Shell(display);
 		shell.setEnabled(false);
+		myShell.addListener(SWT.Close, new Listener() {
+		      public void handleEvent(Event event) {
+		    	  shell.setEnabled(true);
+		      }
+		    });
 		myShell.setText("Generate Maze");
 		myShell.setSize(300, 200);
 		
@@ -262,7 +237,9 @@ public class MazeWindow extends BasicWindow implements View {
 			
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
-
+				
+				//Adding keyListeners to gameBoard
+				mazeDisplay.addKeyListener(movementKeyListener);
 				setChanged();
 				notifyObservers("generate_maze "+txtName.getText()+" "+floorSpinner.getSelection()+ " " + rowsSpinner.getSelection()+ " " + colsSpinner.getSelection()+" "+listAlgo.getSelection()[0]);			
 				myShell.close();
@@ -515,7 +492,7 @@ public class MazeWindow extends BasicWindow implements View {
 	class helpGetHelpItemListener implements SelectionListener {
 	    public void widgetSelected(SelectionEvent event) {
 	    	MessageBox dialog = new MessageBox(shell, SWT.ICON_INFORMATION | SWT.OK);
-	    	dialog.setText("Help - Lion King 1.0");
+	    	dialog.setText("About - Lion King 1.0");
 	    	dialog.setMessage("This Java project was created by Leibovitz Edan"
 	    			+ "\nas part of the mandatory requirements of a Java course."
 	    			+ "\nFor any help please contact me- leibo.edan@gmail.com"
@@ -530,4 +507,36 @@ public class MazeWindow extends BasicWindow implements View {
 	    }
 	  }
 
+	private class MovementKeyListener implements KeyListener{
+
+		@Override
+		public void keyPressed(KeyEvent e) {
+						switch (e.keyCode) {
+						case SWT.ARROW_UP:
+							mazeDisplay.moveUp();
+							break;
+						case SWT.ARROW_LEFT:
+							mazeDisplay.moveLeft();
+							break;
+						case SWT.ARROW_RIGHT:
+							mazeDisplay.moveRight();
+							break;
+						case SWT.ARROW_DOWN:
+							mazeDisplay.moveDown();
+							break;
+						case SWT.PAGE_UP:
+							mazeDisplay.movePageUp();
+							break;
+						case SWT.PAGE_DOWN:
+							mazeDisplay.movePageDown();
+							break;
+						default:
+							break;
+						}			
+		}
+
+		@Override
+		public void keyReleased(KeyEvent arg0) {
+		}
+	}
 }

@@ -100,6 +100,7 @@ public class MazeGameboard extends Gameboard {
 					hintPath=null;
 					mazeData=null;
 					withHint=false;
+
 					
 					try {
 						Thread.sleep(1000);
@@ -111,6 +112,7 @@ public class MazeGameboard extends Gameboard {
 					MessageBox dialog = new MessageBox(getShell(), SWT.ICON_INFORMATION | SWT.OK);
 			    	dialog.setText("Congratulation");
 			    	dialog.setMessage("Game Over!");
+			    	getShell().setEnabled(true);
 			    	
 			    	
 			    	// open dialog and await user selection
@@ -230,7 +232,6 @@ public class MazeGameboard extends Gameboard {
 						if (i==path.size()) {
 							cancel();
 							timer.cancel();
-							getShell().setEnabled(true);
 						}
 						
 					}
