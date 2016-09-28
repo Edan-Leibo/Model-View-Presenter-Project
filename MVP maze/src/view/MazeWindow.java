@@ -27,6 +27,8 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Spinner;
 import org.eclipse.swt.widgets.Text;
 
+import properties.Properties;
+import properties.PropertiesLoader;
 import algorithms.mazeGenerators.Maze3d;
 import algorithms.mazeGenerators.Position;
 import algorithms.search.Solution;
@@ -40,10 +42,11 @@ public class MazeWindow extends BasicWindow implements View {
 	private Button btnGenerateMaze;
 	private Menu menuBar, fileMenu, helpMenu;
 	private MenuItem fileMenuHeader, helpMenuHeader;
-	private MenuItem fileExitItem, fileSaveItem, fileLoadItem ,helpGetHelpItem;
-	
+	private MenuItem fileExitItem, fileSaveItem, fileLoadItem ,helpGetHelpItem,filePropertiesItem;
+	private Properties p;
 	@Override
 	protected void initWidgets() {
+		p=PropertiesLoader.getInstance().getProperties();
 		shell.setLayout(new GridLayout(2, false));				
 		    menuBar = new Menu(shell, SWT.BAR);
 		    fileMenuHeader = new MenuItem(menuBar, SWT.CASCADE);
@@ -52,6 +55,9 @@ public class MazeWindow extends BasicWindow implements View {
 		    fileMenu = new Menu(shell, SWT.DROP_DOWN);
 		    fileMenuHeader.setMenu(fileMenu);
 
+		    filePropertiesItem = new MenuItem(fileMenu, SWT.PUSH);
+		    filePropertiesItem.setText("&Properties");
+		    
 		    fileSaveItem = new MenuItem(fileMenu, SWT.PUSH);
 		    fileSaveItem.setText("&Save");
 		    fileSaveItem.setEnabled(false);
@@ -72,6 +78,7 @@ public class MazeWindow extends BasicWindow implements View {
 		    helpGetHelpItem.setText("&Get Help");
 
 		    fileExitItem.addSelectionListener(new fileExitItemListener());
+		    filePropertiesItem.addSelectionListener(new filePropertiesItemListener());
 		    fileSaveItem.addSelectionListener(new fileSaveItemListener());
 		    fileLoadItem.addSelectionListener(new fileLoadItemListener());
 		    helpGetHelpItem.addSelectionListener(new helpGetHelpItemListener());
@@ -462,13 +469,29 @@ public class MazeWindow extends BasicWindow implements View {
 	    public void widgetDefaultSelected(SelectionEvent event) {
 	    }
 	  }
+	
+	class filePropertiesItemListener implements SelectionListener {
+	    public void widgetSelected(SelectionEvent event) {	    	
+	    	MessageBox dialog = new MessageBox(shell, SWT.ICON_INFORMATION | SWT.OK);
+	    	dialog.setText("System Proreties");
+	    	dialog.setMessage("The following are the system properties:"
+	    			+ "\nMaximum amount of threads - "+p.getNumOfThreads()
+	    			+ "\nSearching algorithm - "+p.getSolveMazeAlgorithm()
+	    			+ "\nGenerating algorithm - "+p.getGenerateMazeAlgorithm());
+	    	dialog.open();
+	    }
 
+	    public void widgetDefaultSelected(SelectionEvent event) {
+	    }
+	  }
+	
 	class helpGetHelpItemListener implements SelectionListener {
 	    public void widgetSelected(SelectionEvent event) {
 	    	MessageBox dialog = new MessageBox(shell, SWT.ICON_INFORMATION | SWT.OK);
 	    	dialog.setText("Help - Lion King 1.0");
 	    	dialog.setMessage("This Java project was created by Leibovitz Edan"
 	    			+ "\nas part of the mandatory requirements of a Java course."
+	    			+ "\nFor any help please contact me- leibo.edan@gmail.com"
 	    			+ "\n\nThe Computer science department of Colman College of Management studies."
 	    			+ "\nInstructed by: Mr Nisim Barami. ");
 	    	// open dialog and await user selection

@@ -165,8 +165,8 @@ public class MyModel extends Observable implements Model {
 		}
 		
 		if (!(algorithm.equals("BFS") || algorithm.equals("DFS"))){
-			//if you ask for an algorithm which I can't recognize,
-			//I'll load from proprties file 
+			//if you ask for an algorithm which it can't recognize,
+			//it will load from properties file 
 			algorithm=properties.getSolveMazeAlgorithm();
 		}
 		
