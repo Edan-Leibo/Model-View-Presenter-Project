@@ -61,8 +61,11 @@ public class CLI extends Observable{
 						setChanged();
 						notifyObservers(commandLine);
 						
-						if (commandLine.equals("exit"))
+						if (commandLine.equals("exit")){
+							in.close();
+							out.close();
 							break;
+						}
 						
 					} catch (IOException e) {
 						e.printStackTrace();
