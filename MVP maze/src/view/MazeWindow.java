@@ -474,6 +474,8 @@ public class MazeWindow extends BasicWindow implements View {
 	    	
 	    	setChanged();
 	    	notifyObservers("load_maze "+selected+ " "+ selectedMazeName.substring(0, selectedMazeName.length()-4));	
+			movementKeyListener.setActive(true);
+		    fileSaveItem.setEnabled(true);
 
 	    }
 
