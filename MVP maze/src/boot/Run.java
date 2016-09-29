@@ -11,9 +11,24 @@ import properties.PropertiesLoader;
 import view.MazeWindow;
 import view.MyView;
 
+
+/**
+ * This is the class that uses to to start the program
+ * 
+ * @author Edan
+ * @version 1.0
+ */
 public class Run {
 
+	
+	/**
+	 * the main method thats runs the program
+	 *  
+	 * @param args the main arguments
+	 */
 	public static void main(String[] args) {
+		
+		
 		Properties properties = PropertiesLoader.getInstance().getProperties();
 		String perspective = properties.getPerspective();
 		if (perspective.equals("cli"))

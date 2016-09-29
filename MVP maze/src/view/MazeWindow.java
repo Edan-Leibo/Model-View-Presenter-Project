@@ -49,7 +49,8 @@ public class MazeWindow extends BasicWindow implements View {
 	private Properties p;
 	private MouseWheelListener mouseZoomlListener;
 	protected MovementKeyListener movementKeyListener=new MovementKeyListener();
-	
+
+
 	@Override
 	protected void initWidgets() {
 		shell.addListener(SWT.Close, new Listener()
@@ -339,7 +340,7 @@ public class MazeWindow extends BasicWindow implements View {
 	public void notifyMazeSaved(String name) {
 	//	System.out.println("sadasd");
 	}
-
+	
 	@Override
 	public void notifyMazeLoaded(String name) {
 		mazeDisplay.setGameboardName(name);

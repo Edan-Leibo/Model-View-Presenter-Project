@@ -3,7 +3,6 @@
  */
 package searchingAlgorithmTests;
 
-import static org.junit.Assert.fail;
 
 import java.util.List;
 
@@ -34,9 +33,7 @@ public class BFSTest {
 	private int amountOfMazes;
 	private int amountOfBigMazes;
 
-	/**
-	 * @throws java.lang.Exception
-	 */
+
 	@Before
 	public void setUp() throws Exception {
 		Maze3dGenerator generator = new SimpleMaze3dGenerator();
@@ -46,9 +43,6 @@ public class BFSTest {
 		amountOfBigMazes = 5;
 	}
 
-	/**
-	 * @throws java.lang.Exception
-	 */
 	@After
 	public void tearDown() throws Exception {
 	}

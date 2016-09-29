@@ -17,6 +17,13 @@ import algorithms.search.Solution;
 * @since   2014-09-14
 */
 
+/**
+ * CommandsManager wraps a HashMap of a String - Command
+ * this is an implementation of the command design pattern
+ * 
+ * @author Edan
+ * @version 1.0
+ */
 public class CommandsManager {
 	
 	private Model model;
@@ -27,7 +34,6 @@ public class CommandsManager {
 	 * 
      * @param model - the model
      * @param view - the view
-	 * @return Nothing
 	 */	
 	public CommandsManager(Model model, View view) {
 		this.model = model;

@@ -4,12 +4,19 @@ import java.util.Observable;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 
+/**
+ * This BasicWindow create a shell and start the main loop
+ * any shell in the system will extends this class and will
+ * implement initWidgets method
+ * 
+ * @author Edan
+ * @version 1.0
+ */
 public abstract class BasicWindow extends Observable implements Runnable {
 
 	protected Display display;
 	protected Shell shell;
-	
-	
+
 	protected abstract void initWidgets();
 	
 	@Override

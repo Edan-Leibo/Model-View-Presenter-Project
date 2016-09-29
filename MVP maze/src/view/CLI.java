@@ -18,11 +18,10 @@ public class CLI extends Observable{
 	private PrintWriter out;
 	
 	/**
-	 * this method is a constructor
+	 * A constructor for creating a new CLI
 	 * 
-     * @param in - a bufferedReader
-     * @param out - a PrintWriter
-	 * @return Nothing
+     * @param in a bufferedReader to get input from
+     * @param out a PrintWriter to set the output to
 	 */
 	public CLI(BufferedReader in, PrintWriter out) {
 		this.in = in;
@@ -32,7 +31,6 @@ public class CLI extends Observable{
 	/**
 	 * this method prints the options for the user to choose from
 	 * 
-	 * @return Nothing
 	 */
 	private void printMenu() {
 		out.print("\nChoose command: \n");
@@ -43,7 +41,6 @@ public class CLI extends Observable{
 	 * this method activates a new thread of the CLI
 	 * which makes a loop of interaction with the user
 	 * 
-	 * @return Nothing
 	 */
 	public void start() {
 		

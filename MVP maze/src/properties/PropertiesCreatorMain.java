@@ -1,12 +1,8 @@
 package properties;
 
-import java.beans.XMLEncoder;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-
+//for future use
 public class PropertiesCreatorMain {
-
+/*
 	public static void main(String[] args) {
 		Properties prop = new Properties();
 		prop.setPerspective("gui");
@@ -24,5 +20,5 @@ public class PropertiesCreatorMain {
 			xmlEncoder.close();
 		}
 	}
-
+*/
 }

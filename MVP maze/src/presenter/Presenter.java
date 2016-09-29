@@ -7,12 +7,26 @@ import java.util.Observer;
 import model.Model;
 import view.View;
 
+/**
+ * The Presenter class is part of the MVP architecture.
+ * It gets notification from both the model and the view
+ * 
+ * 
+ * @author Edan
+ * @version 1.0
+ */
 public class Presenter implements Observer {
+	@SuppressWarnings("unused")
 	private Model model;
 	private View view;
 	private CommandsManager commandsManager;
 	private HashMap<String, Command> commands;
 	
+	/**
+	 * 
+	 * @param model the model that the Presenter interact with
+	 * @param view the view that the Presenter interact with
+	 */
 	public Presenter(Model model, View view) {
 		this.model = model;
 		this.view = view;

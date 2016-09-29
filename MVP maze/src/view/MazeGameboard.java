@@ -39,6 +39,12 @@ public class MazeGameboard extends Gameboard {
 	private Image hintImage = new Image(getDisplay(),"resources"+File.separator+"hint.png");
 
 	
+	/**
+	 *	constructs a new game board
+	 * 
+	 * @param parent the parent of the canvas
+	 * @param style the style of the canvas
+	 */
 	public MazeGameboard(Shell parent, int style) {
 		super(parent, style);
 		hintPath=null;
@@ -132,15 +138,13 @@ public class MazeGameboard extends Gameboard {
 	}
 
 	/**
+	 * this a setter method for the gameCharacter
 	 * @param gameCharacter the gameCharacter to set
 	 */
 	public void setGameCharacter(GameCharacter gameCharacter) {
 		this.gameCharacter = gameCharacter;
 	}
-	
-	/**
-	 * @param endCol the endCol to set
-	 */
+
 	public void setEndPosition(int z, int y, int x) {
 
 		this.endFloor = z;
@@ -150,15 +154,13 @@ public class MazeGameboard extends Gameboard {
 	}
 	
 	/**
+	 * this a getter method for the character floor
 	 * @return the CharacterFloor
 	 */
 	public int getCharacterFloor() {
 		return gameCharacter.getFloor();
 	}
 
-	/**
-	 * @param maze the maze to set
-	 */
 	public void setData(Object data) {
 		this.maze = (Maze3d)data;
 		hintPath=null;
@@ -166,6 +168,7 @@ public class MazeGameboard extends Gameboard {
 	}
 
 	/**
+	 * this a getter method for the game board name
 	 * @return the name
 	 */
 	public String getGameboardName() {
@@ -173,6 +176,7 @@ public class MazeGameboard extends Gameboard {
 	}
 
 	/**
+	 * this a setter method for the game board name
 	 * @param name the name to set
 	 */
 	public void setGameboardName(String name) {
@@ -180,6 +184,8 @@ public class MazeGameboard extends Gameboard {
 	}
 	
 	/**
+	 * this method tells the game board to solve the maze
+	 * 
 	 * @param path the path of the solution thats needs to be displayed
 	 */
 	public void showSolution(ArrayList<Position> path) {
@@ -189,6 +195,8 @@ public class MazeGameboard extends Gameboard {
 	}
 	
 	/**
+	 * this method tells the game board to give a hintS 
+	 * 
 	 * @param path the path of the solution, will create a hint using that solution
 	 */
 	public void showHint(ArrayList<Position> path) {
