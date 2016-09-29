@@ -20,7 +20,6 @@ import view.MyView;
  */
 public class Run {
 
-	
 	/**
 	 * the main method thats runs the program
 	 *  
