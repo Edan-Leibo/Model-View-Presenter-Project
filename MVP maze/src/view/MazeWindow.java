@@ -48,7 +48,7 @@ public class MazeWindow extends BasicWindow implements View {
 	private MenuItem fileExitItem, fileSaveItem, fileLoadItem ,aboutGetHelpItem,filePropertiesItem;
 	private Properties p;
 	private MouseWheelListener mouseZoomlListener;
-	protected KeyListener movementKeyListener=new MovementKeyListener();
+	protected MovementKeyListener movementKeyListener=new MovementKeyListener();
 	
 	@Override
 	protected void initWidgets() {
@@ -135,7 +135,7 @@ public class MazeWindow extends BasicWindow implements View {
 			
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				mazeDisplay.removeKeyListener(movementKeyListener);
+				movementKeyListener.setActive(false);
 				btnHintMaze.setEnabled(false);
 				shell.setEnabled(false);
 				setChanged();
@@ -167,7 +167,8 @@ public class MazeWindow extends BasicWindow implements View {
 			}
 		});
 		
-		mazeDisplay= new MazeGameboard(shell, SWT.BORDER | SWT.DOUBLE_BUFFERED);//?
+		mazeDisplay= new MazeGameboard(shell, SWT.BORDER | SWT.DOUBLE_BUFFERED);
+		mazeDisplay.addKeyListener(movementKeyListener);
 		mazeDisplay.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 		
 		mouseZoomlListener = new MouseWheelListener() {
@@ -206,7 +207,7 @@ public class MazeWindow extends BasicWindow implements View {
 	    final Spinner floorSpinner = new Spinner(myShell, SWT.READ_ONLY);
 	    floorSpinner.setBackground(new Color(null,255,255,255));
 	    floorSpinner.setMinimum(3);
-	    floorSpinner.setMaximum(10);
+	    floorSpinner.setMaximum(12);
 	    floorSpinner.setIncrement(1);
 
 		Label lblRows = new Label(myShell, SWT.NONE);
@@ -237,9 +238,14 @@ public class MazeWindow extends BasicWindow implements View {
 			
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
-				
+				if (txtName.getText().replaceAll("\\s","").equals("")){
+					MessageBox msg = new MessageBox(myShell,SWT.ICON_ERROR);
+					msg.setMessage("Invalid maze name");
+					msg.open();	
+					return;
+				}
 				//Adding keyListeners to gameBoard
-				mazeDisplay.addKeyListener(movementKeyListener);
+				movementKeyListener.setActive(true);
 				setChanged();
 				notifyObservers("generate_maze "+txtName.getText()+" "+floorSpinner.getSelection()+ " " + rowsSpinner.getSelection()+ " " + colsSpinner.getSelection()+" "+listAlgo.getSelection()[0]);			
 				myShell.close();
@@ -507,10 +513,16 @@ public class MazeWindow extends BasicWindow implements View {
 	    }
 	  }
 
-	private class MovementKeyListener implements KeyListener{
-
+	public class MovementKeyListener implements KeyListener{
+		public boolean active=false;
+		
+		public void setActive(boolean b){
+			active=b;
+		}
+		
 		@Override
 		public void keyPressed(KeyEvent e) {
+			if (active==false) return;
 						switch (e.keyCode) {
 						case SWT.ARROW_UP:
 							mazeDisplay.moveUp();
