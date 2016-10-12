@@ -1,0 +1,8 @@
+----Explanation about the unit test I made-----
+As you can see there is a file named BGSTest.java in the folder searchingAlgotihmTests. This file contains several tests I made on the BFS algorithm.
+
+I used the setUp and the tearDown functions which invoke before any test I make. There I generated a simple maze in a small fixed size, I also used the maze adapter so that I wil be able to give my maze to the search method. 
+
+At the first test I checked that my maze has zeros all along the way according to the solution path.
+Furthermore I decide to test 5 mazes 1000 times to create an intense test.
+I added another test which generate big-scale mazes to see if it still works even if the size has grown. 
