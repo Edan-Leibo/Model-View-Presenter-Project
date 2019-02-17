@@ -1,7 +1,7 @@
 # Model-View-Presenter-Project
 An interactive maze game which has both client side (the game itself) and server side that handles many clients simultaneously. Different algorithms are being used: For generating new mazes – Simple &amp; Growing Tree algorithm and for maze solving- Depth First Search &amp; Best First Search.
 
-## _DOWNLOAD the full and  game with all the explanations inside:_ ##
+## _DOWNLOAD the full and  game with all the explanations inside_ ##
 https://drive.google.com/open?id=1fkWM9IpRPoSoDgJsDUGDORi9xotRntKn
 
 ## _Click the image below to see LIVE demonstration & full explanation_ ##
