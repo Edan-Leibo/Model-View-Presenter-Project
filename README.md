@@ -41,7 +41,7 @@ by pressing the "Hint" button.
 
 10. The server will solve the maze and hint the user by randomly spreading red bugs
 along the solution path.
-![hint](https://i.imgur.com/aSKpb1p.jpg
+![hint](https://i.imgur.com/aSKpb1p.jpg)
 
 11. Every maze that the server solves will be saved in the server's cache memory.
 ![maze in cache](https://i.imgur.com/j6TAKxc.jpg)
@@ -100,3 +100,12 @@ file found in the utilities directory.
 •	dir <path>
 
 •	exit
+
+**_Developed by Edan Leibovitz_**
+
+**_edan.leibo@gmail.com_**
+
+**:smile: Feel free to use it at will with attribution of source. :bowtie:**
+
+**:astonished: If you find any typos, errors, inconsistencies etc. please do not hesitate to contact me for any issue. :mailbox:**
+
